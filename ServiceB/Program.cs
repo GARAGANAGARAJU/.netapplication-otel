@@ -56,11 +56,15 @@ builder.Services.AddOpenTelemetry()
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 // Custom metrics for the application
 var appMeter = new Meter(serviceName, serviceVersion);
 var requestCounter = appMeter.CreateCounter<int>("app.request.count", description: "Counts the number of requests");
 
 var app = builder.Build();
+
+// Set the URLs the application will listen on
+app.Urls.Add("http://localhost:5001");
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
@@ -74,7 +78,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-
 app.Run();
-
 

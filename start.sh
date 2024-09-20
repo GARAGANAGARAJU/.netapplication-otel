@@ -1,8 +1,14 @@
 #!/bin/bash
 
-# Start ServiceA on port 80
-dotnet /app/publish/ServiceA/ServiceA.dll --urls "http://0.0.0.0:80" &
+# Start ServiceA
+dotnet /app/publish/ServiceA/ServiceA.dll &
 
-# Start ServiceB on port 81
-dotnet /app/publish/ServiceB/ServiceB.dll --urls "http://0.0.0.0:81"
+# Start ServiceB
+dotnet /app/publish/ServiceB/ServiceB.dll &
+
+# Wait for a few seconds to ensure both services are up
+sleep 10
+
+# Start NGINX
+nginx -g 'daemon off;'
 

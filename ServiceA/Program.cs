@@ -56,7 +56,7 @@ builder.Services.AddOpenTelemetry()
 builder.Services.AddControllers();
 builder.Services.AddHttpClient("backend", client =>
 {
-    client.BaseAddress = new Uri("http://172.173.135.32:8081/weatherforecastbackend"); // Use the backend URL
+    client.BaseAddress = new Uri("http://localhost:5001"); // Use the backend URL
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -66,6 +66,9 @@ var appMeter = new Meter(serviceName, serviceVersion);
 var requestCounter = appMeter.CreateCounter<int>("app.request.count", description: "Counts the number of requests");
 
 var app = builder.Build();
+
+// Set the URLs the application will listen on
+app.Urls.Add("http://localhost:5000");
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
